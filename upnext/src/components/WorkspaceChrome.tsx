@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import type { ReactNode } from "react";
-import { ArrowLeft, ArrowUpRight } from "lucide-react";
+import { useState, type ReactNode } from "react";
+import { ArrowLeft, ArrowUpRight, ChevronDown, Menu, X } from "lucide-react";
 import { Building2, ChartNoAxesCombined, CircleUserRound, FileText, LayoutDashboard, Settings2, ShieldCheck } from "lucide-react";
 import Logo from "@/components/Logo";
 import { useOrganizationProfile } from "@/lib/organization-store";
@@ -46,6 +46,7 @@ function getWorkspaceIcon(type: "organization" | "admin", label: string) {
 
 function WorkspaceFrame({ type, children }: { type: "organization" | "admin"; children: ReactNode }) {
   const pathname = usePathname();
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const isAdmin = type === "admin";
   const organization = useOrganizationProfile();
   const isLogin = pathname === "/admin/login" || pathname === "/organization/login" || pathname === "/organization/register";
@@ -54,7 +55,7 @@ function WorkspaceFrame({ type, children }: { type: "organization" | "admin"; ch
   const label = isAdmin ? "DEMO REVIEWER" : "DEMO ORGANIZATION";
 
   return (
-    <div className="min-h-[calc(100vh-1px)] bg-[#faf9f7]">
+    <div className={"min-h-[calc(100vh-1px)] bg-[#faf9f7] " + (isAdmin ? "admin-workspace" : "organization-workspace")}>
       <header className="border-b border-line bg-white">
         <div className="mx-auto flex min-h-16 max-w-[1440px] items-center justify-between gap-4 px-4 sm:px-6">
           <div className="flex items-center gap-5">
@@ -75,13 +76,32 @@ function WorkspaceFrame({ type, children }: { type: "organization" | "admin"; ch
       {isLogin ? (
         <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6">{children}</main>
       ) : (
-        <div className="mx-auto grid max-w-[1440px] gap-6 px-4 py-6 sm:px-6 lg:grid-cols-[230px_minmax(0,1fr)] lg:gap-8">
-          <aside className="h-fit rounded-2xl border border-line bg-white p-3 lg:sticky lg:top-6">
+        <div className="mx-auto grid max-w-[1440px] gap-4 px-3 py-4 sm:gap-6 sm:px-6 sm:py-6 lg:grid-cols-[230px_minmax(0,1fr)] lg:gap-8">
+          <aside className="workspace-sidebar h-fit rounded-2xl border border-line bg-white p-3 lg:sticky lg:top-6">
             <div className="px-3 pb-3 pt-2">
-              <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-muted">{isAdmin ? "Administration" : "Workspace"}</p>
-              <p className="mt-1 truncate text-sm font-semibold text-ink">{isAdmin ? "UpNext review desk" : organization.name}</p>
+              <div className="flex items-center justify-between gap-3">
+                <div className="min-w-0">
+                  <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-muted">{isAdmin ? "Administration" : "Workspace"}</p>
+                  <p className="mt-1 truncate text-sm font-semibold text-ink">{isAdmin ? "UpNext review desk" : organization.name}</p>
+                </div>
+                <button
+                  type="button"
+                  className="inline-flex min-h-10 shrink-0 items-center gap-2 rounded-lg border border-line px-3 text-sm font-semibold text-ink lg:hidden"
+                  aria-expanded={mobileNavOpen}
+                  aria-controls="workspace-navigation"
+                  onClick={() => setMobileNavOpen((open) => !open)}
+                >
+                  {mobileNavOpen ? <X size={16} aria-hidden="true" /> : <Menu size={16} aria-hidden="true" />}
+                  <span>{mobileNavOpen ? "Close" : "Menu"}</span>
+                  <ChevronDown size={14} className={"transition-transform " + (mobileNavOpen ? "rotate-180" : "")} aria-hidden="true" />
+                </button>
+              </div>
             </div>
-            <nav aria-label={isAdmin ? "Admin workspace" : "Organization workspace"} className="flex gap-1 overflow-x-auto lg:flex-col">
+            <nav
+              id="workspace-navigation"
+              aria-label={isAdmin ? "Admin workspace" : "Organization workspace"}
+              className={(mobileNavOpen ? "grid " : "hidden ") + "workspace-nav grid-cols-1 gap-1 lg:flex lg:flex-col"}
+            >
               {links.map((link) => {
                 const active = pathname === link.href || (link.href !== (isAdmin ? "/admin" : "/organization/dashboard") && pathname.startsWith(link.href + "/"));
                 const Icon = getWorkspaceIcon(type, link.label);
@@ -90,6 +110,7 @@ function WorkspaceFrame({ type, children }: { type: "organization" | "admin"; ch
                     key={link.href}
                     href={link.href}
                     aria-current={active ? "page" : undefined}
+                    onClick={() => setMobileNavOpen(false)}
                     className={"flex min-h-10 shrink-0 items-center justify-between gap-3 rounded-xl px-3 text-sm font-medium transition-colors lg:w-full " + (active ? "bg-peach text-ink" : "text-muted hover:bg-[#f7f5f3] hover:text-ink")}
                   >
                     <span className="flex items-center gap-2.5"><Icon size={16} aria-hidden="true" />{link.label}</span>
@@ -105,7 +126,7 @@ function WorkspaceFrame({ type, children }: { type: "organization" | "admin"; ch
               </Link>
             </div>
           </aside>
-          <main className="min-w-0">{children}</main>
+          <main className="workspace-content min-w-0">{children}</main>
         </div>
       )}
     </div>

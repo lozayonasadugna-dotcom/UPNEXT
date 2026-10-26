@@ -357,14 +357,14 @@ export function OrganizationRegistrationForm() {
 
             {saveMessage && <p role="status" className="rounded-xl border border-line bg-[#f7f5f3] p-3 text-sm text-muted">{saveMessage}</p>}
 
-            <div className="mt-8 flex flex-wrap justify-between gap-3">
-              <button type="button" className="btn btn-ghost" onClick={() => setStep((current) => Math.max(1, current - 1))} disabled={step === 1}>Back</button>
-              <div className="flex gap-3">
-                <button type="button" className="btn btn-ghost" onClick={saveDraft}>Save draft</button>
+            <div className="mt-8 flex flex-col-reverse justify-between gap-3 sm:flex-row">
+              <button type="button" className="btn btn-ghost w-full sm:w-auto" onClick={() => setStep((current) => Math.max(1, current - 1))} disabled={step === 1}>Back</button>
+              <div className="flex flex-col gap-3 sm:flex-row">
+                <button type="button" className="btn btn-ghost w-full sm:w-auto" onClick={saveDraft}>Save draft</button>
                 {canContinue ? (
-                  <button type="button" className="btn btn-primary" onClick={continueStep}>Continue</button>
+                  <button type="button" className="btn btn-primary w-full sm:w-auto" onClick={continueStep}>Continue</button>
                 ) : (
-                  <button type="button" className="btn btn-primary" onClick={submitRegistration}>Submit for review</button>
+                  <button type="button" className="btn btn-primary w-full sm:w-auto" onClick={submitRegistration}>Submit for review</button>
                 )}
               </div>
             </div>

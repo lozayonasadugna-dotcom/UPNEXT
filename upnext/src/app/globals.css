@@ -168,3 +168,30 @@ img { -webkit-user-drag: none; user-select: none; }
   .intro { display: none; }
   .marquee-track { transform: none; }
 }
+
+@media (max-width: 639px) {
+  .organization-workspace .workspace-content > div.mx-auto {
+    padding-inline: 0;
+    padding-block: 0.25rem;
+  }
+
+  .organization-workspace .workspace-content h1 {
+    font-size: clamp(1.75rem, 8vw, 2.25rem);
+    line-height: 1.12;
+    overflow-wrap: anywhere;
+  }
+
+  .organization-workspace .workspace-sidebar {
+    padding: 0.625rem;
+  }
+
+  .organization-workspace .workspace-nav a {
+    min-height: 2.75rem;
+    white-space: normal;
+  }
+
+  .organization-workspace .workspace-content .btn {
+    max-width: 100%;
+    white-space: normal;
+  }
+}
