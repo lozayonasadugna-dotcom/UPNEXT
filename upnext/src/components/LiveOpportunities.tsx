@@ -1,6 +1,6 @@
 "use client";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { BriefcaseBusiness, ExternalLink, MapPin, RefreshCw } from "lucide-react";
+import { BriefcaseBusiness, ExternalLink, MapPin, RefreshCw, Radio } from "lucide-react";
 import { motion } from "motion/react";
 import type { Category } from "@/lib/types";
 import { isLiveJob, type LiveJob } from "@/lib/live-jobs";
@@ -115,7 +115,7 @@ export default function LiveOpportunities({
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
           <h2 id="live-jobs-title" className="text-3xl font-extrabold md:text-4xl">{title}</h2>
-          <p className="mt-2 text-sm text-muted">From Arbeitnow · jobs are based in Germany · feed refreshes every 6 hours.</p>
+          <p className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted"><span className="inline-flex items-center gap-1.5 font-semibold text-emerald-800"><Radio size={14} aria-hidden="true" /> Live source feed</span><span>From Arbeitnow’s Germany job board · refreshes every 6 hours · listings may be up to 24 hours old.</span></p>
         </div>
         <button type="button" onClick={refresh} disabled={refreshing || state === "loading"} className="btn btn-ghost !min-h-10 !px-3 text-sm disabled:opacity-60">
           <RefreshCw size={16} className={refreshing ? "animate-spin" : ""} aria-hidden="true" />
@@ -144,7 +144,7 @@ export default function LiveOpportunities({
             {visibleJobs.map((job, index) => (
               <motion.article key={job.id} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.22, delay: Math.min(index, 5) * 0.04 }} whileHover={{ y: -4 }} className="group flex min-h-64 flex-col rounded-xl border border-line bg-white p-5 transition-[border-color,box-shadow] hover:border-tangerine hover:shadow-lg">
                 <div className="flex items-center justify-between gap-2">
-                  <span className="badge"><BriefcaseBusiness size={13} aria-hidden="true" /> {job.remote ? "Remote" : "Germany listing"}</span>
+                  <span className="badge"><BriefcaseBusiness size={13} aria-hidden="true" /> {job.remote ? "Remote · Germany feed" : "Germany feed"}</span>
                   <span className="text-xs text-muted">{job.jobType.replaceAll("_", " ")}</span>
                 </div>
                 <h3 className="mt-4 text-xl font-bold leading-snug">

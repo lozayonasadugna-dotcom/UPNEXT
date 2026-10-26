@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { motion } from "motion/react";
-import { MapPin, Clock, ShieldCheck, ShieldAlert } from "lucide-react";
+import { MapPin, Clock, ShieldCheck, ShieldAlert, FlaskConical } from "lucide-react";
 import type { Opportunity } from "@/lib/types";
 import { useDeadline } from "@/lib/useDeadline";
 import { categoryImages } from "@/lib/images";
@@ -25,7 +25,10 @@ export default function OpportunityCard({ o }: { o: Opportunity }) {
       <div className="relative">
         <Photo src={img.src} alt={img.alt} tone={img.tone} label={o.category} sizes="(min-width: 1024px) 360px, (min-width: 768px) 45vw, 100vw" className="relative aspect-[16/9] w-full" />
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
-        <span className="badge absolute left-3 top-3 bg-white">{o.category}</span>
+        <div className="absolute left-3 top-3 flex max-w-[calc(100%-4.5rem)] flex-wrap gap-1.5">
+          <span className="badge bg-white">{o.category}</span>
+          {o.illustrative && <span className="badge border border-amber-200 bg-amber-50 text-amber-900"><FlaskConical size={12} aria-hidden="true" /> Demo · {o.country}</span>}
+        </div>
         <div className="absolute right-3 top-3 rounded-lg bg-white"><SaveButton slug={o.slug} title={o.title} /></div>
       </div>
       <div className="flex flex-1 flex-col p-5">
@@ -48,7 +51,7 @@ export default function OpportunityCard({ o }: { o: Opportunity }) {
             {o.skills.slice(0, 3).map((skill) => <li key={skill} className="rounded-full bg-peach px-2.5 py-1 text-xs font-medium">{skill}</li>)}
           </ul>
         )}
-        {o.illustrative && <p className="mt-3 text-xs font-semibold text-muted">Illustrative sample record</p>}
+        {o.illustrative && <p className="mt-3 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs font-semibold text-amber-950">Demo example · fictional listing for display only. Not a real opportunity.</p>}
         <Link href={"/opportunities/" + o.slug} className="mt-4 text-sm font-semibold underline decoration-tangerine decoration-2 underline-offset-4">
           View details<span className="sr-only"> for {o.title}</span>
         </Link>

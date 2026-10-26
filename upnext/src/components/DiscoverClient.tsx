@@ -2,7 +2,7 @@
 import { useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
-import { Search, SearchX } from "lucide-react";
+import { Search, SearchX, FlaskConical, Radio } from "lucide-react";
 import { opportunities } from "@/lib/data";
 import { CATEGORIES, type Category } from "@/lib/types";
 import { daysLeft, isClosed } from "@/lib/format";
@@ -66,6 +66,10 @@ export default function DiscoverClient() {
     <div className="mx-auto max-w-6xl px-4 py-10">
       <h1 className="text-4xl font-extrabold md:text-5xl">Discover opportunities</h1>
       <p className="mt-2 text-muted">Search, filter, and save. Each listing links to its official source.</p>
+      <div className="mt-4 grid gap-3 rounded-xl border border-line bg-white p-4 text-sm sm:grid-cols-2">
+        <p className="flex items-start gap-2 text-muted"><Radio size={16} className="mt-0.5 shrink-0 text-emerald-700" aria-hidden="true" /><span><strong className="text-ink">Live feed:</strong> current jobs from Arbeitnow’s Germany job board, refreshed periodically.</span></p>
+        <p className="flex items-start gap-2 text-muted"><FlaskConical size={16} className="mt-0.5 shrink-0 text-amber-800" aria-hidden="true" /><span><strong className="text-ink">Demo examples:</strong> fictional listings from Ethiopia and other countries, labeled on each card. Do not apply to demo examples.</span></p>
+      </div>
 
       <div className="relative mt-6">
         <label htmlFor="q" className="sr-only">Search by title, organization, skill, or keyword</label>
